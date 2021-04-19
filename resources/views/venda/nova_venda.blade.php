@@ -48,13 +48,6 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2">
-                                            <div class="form-group">
-                                                <label for="qtd-produto">Quantidade</label>
-                                                <input type="number" class="form-control" min="1" value="1"
-                                                    name="qtd-produto" id="qtd-produto">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2">
                                             <div class="btn-group">
                                                 <a id="adiciona-itens-ao-carrinho" class="btn btn-sm btn-primary mt-4"><i
                                                         class="fa fa-plus"></i>

@@ -17,7 +17,7 @@ var Venda = function() {
             html += `<tr data-item=\"${cont}\">`;
             html += `<td>${cont}</td>`;
             html += `<td>Martelo</td>`;
-            html += `<td>2</td>`;
+            html += `<td><input type="number" name="qtdProduto[]" min="1" value="1"/></td>`;
             html += `<td>R$:12,99</td>`;
             html += `<td>R$:24,98</td>`;
             html += `<td>${this.btnRemover(cont)}</td>`;
