@@ -9,8 +9,8 @@
                         <h6 class="m-0 font-weight-bold text-primary">Categoria de produtos</h6>
                         <div>
                             <a href="" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
-                            <a href="{{ route('nova-categoria') }}" class="btn btn-sm text-primary"><i class="fa fa-plus"
-                                    title="Adicionar nova categoria"></i></a>
+                            <a href="{{ route('addedit-categoria') }}" class="btn btn-sm text-primary"><i
+                                    class="fa fa-plus" title="Adicionar nova categoria"></i></a>
                         </div>
 
                     </div>
@@ -26,14 +26,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($listCategoria as $rst)
+                                @foreach ($categoria as $rst)
                                     <tr>
-                                        <th scope="row">{{ $rst->id }}</th>
+                                        <th scope="row">{{ $rst->categoria_id }}</th>
                                         <td>{{ $rst->categoria }}</td>
                                         <td></td>
-                                        <td><button href="" class="btn btn-xs text-success"><i
-                                                    class="fas fa-pencil-alt"></i></button><button href=""
-                                                class="btn btn-xs text-warning"><i class="fas fa-trash-alt"></i></button>
+                                        <td><a href="{{ asset("categoria/addedit/{$rst->categoria_id}") }}"
+                                                class="btn btn-xs text-success"><i class="fas fa-pencil-alt"></i></a>
+                                            <button class="btn btn-xs text-warning"
+                                                onclick="deletarCategoria({{ $rst->categoria_id }})"><i
+                                                    class="fas fa-trash-alt"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -46,3 +49,5 @@
         </div>
     </div>
 @endsection
+<script src="{{ asset('plugins/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('js-pages/categoria/categoria.js') }}"></script>

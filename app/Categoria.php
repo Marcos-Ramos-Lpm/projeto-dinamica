@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CategoriaProduto extends Model
+class Categoria extends Model
 {
-    protected $table = 'categoria_produto';
-    protected $primaryKey = 'id';
+    protected $table = 'categoria';
+    protected $primaryKey = 'categoria_id';
     public $timestamps = true;
 
     protected $fillable = [

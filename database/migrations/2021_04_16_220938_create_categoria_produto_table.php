@@ -13,8 +13,8 @@ class CreateCategoriaProdutoTable extends Migration
      */
     public function up()
     {
-        Schema::create('categoria_produto', function (Blueprint $table) {
-            $table->id();
+        Schema::create('categoria', function (Blueprint $table) {
+            $table->id('categoria_id');
             $table->string('categoria');
             $table->timestamps();
         });

@@ -18,16 +18,14 @@
                             <div class="col-lg-12">
                                 <form method="POST" action="">
                                     @csrf
+                                    <input type="hidden" name="categoria_id" value="{{ $categoria->categoria_id }}" />
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="categoria">Titulo da categoria</label>
-                                                <input type="text" class="form-control" @error('categoria') is-invalid
-                                                    @enderror name="categoria" id="categoria"
-                                                    placeholder="Digite o titulo da nova categoria">
-                                                @error('categoria')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <input type="text" class="form-control" name="categoria" id="categoria"
+                                                    placeholder="Digite o titulo da nova categoria"
+                                                    value="{{ $categoria->categoria }}">
                                             </div>
                                         </div>
                                     </div>

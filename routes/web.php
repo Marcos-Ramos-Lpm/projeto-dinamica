@@ -20,21 +20,33 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 //CLIENTES
-Route::get('/cliente', 'ClienteController@index')->middleware('auth')->name('clientes');
-Route::get('/adicionar-cliente', 'ClienteController@index_cadastro')->middleware('auth')->name('novo-cliente');
-Route::post('/adicionar-cliente', 'ClienteController@novo_cliente')->middleware('auth')->name('adicionar-cliente');
+Route::group(['prefix' => 'cliente'], function () {
+    Route::get('/', 'ClienteController@show')->middleware('auth')->name('clientes');
+    Route::get('/addedit/{id?}', 'ClienteController@addedit')->middleware('auth')->name('addedit-cliente');
+    Route::post('/addedit/{id?}', 'ClienteController@store')->middleware('auth')->name('create-update');
+    Route::delete('/delete/{id?}', 'ClienteController@destroy')->middleware('auth')->name('delete');
+});
+
 
 //Categoria de produtos
-Route::get('/categoria-produto', 'CategoryProdutoController@index')->middleware('auth')->name('categoria-produto');
-Route::get('/nova-categoria-produto', 'CategoryProdutoController@indexAddCategory')->middleware('auth')->name('nova-categoria');
-Route::post('/nova-categoria-produto', 'CategoryProdutoController@createCategory')->middleware('auth')->name('add-nova-categoria');
+Route::group(['prefix' => 'categoria'], function () {
+    Route::get('/', 'CategoriaController@show')->middleware('auth')->name('categoria');
+    Route::get('/addedit/{id?}', 'CategoriaController@addedit')->middleware('auth')->name('addedit-categoria');
+    Route::post('/addedit/{id?}', 'CategoriaController@store')->middleware('auth')->name('addedit');
+    Route::delete('/delete/{id?}', 'CategoriaController@destroy')->middleware('auth')->name('delete');
+});
+
 
 //produto
-Route::get('/produto', 'ProdutoController@index')->middleware('auth')->name('produtos');
-Route::get('/adicionar-produto', 'ProdutoController@indexNewProduto')->middleware('auth')->name('novo-produto');
+Route::group(['prefix' => 'produto'], function () {
+    Route::get('/', 'ProdutoController@show')->middleware('auth')->name('produtos');
+    Route::get('/addedit/{id?}', 'ProdutoController@addedit')->middleware('auth')->name('addedit-produto');
+    Route::post('/addedit/{id?}', 'ProdutoController@store')->middleware('auth')->name('addedit');
+    Route::delete('/delete/{id?}', 'ProdutoController@destroy')->middleware('auth')->name('deletar-produto');
+});
 
 //vendas
 Route::get('/vendas', 'VendaController@index')->middleware('auth')->name('vendas');
-Route::get('/nova-venda', 'VendaController@indexNewVenda')->middleware('auth')->name('nova-venda');
+Route::get('/venda', 'VendaController@store')->middleware('auth')->name('nova-venda');

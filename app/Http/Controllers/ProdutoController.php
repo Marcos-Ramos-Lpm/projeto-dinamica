@@ -2,40 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\CategoriaProduto;
+use App\Categoria;
 use App\Produto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProdutoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('produto.produto');
-    }
-    public function indexNewProduto()
+
+    public function addedit($produto_id = null)
     {
         $produto = new Produto();
 
-        $query = $produto->with(['categoria'])->get();
+        if ($produto_id) {
+            $produto = $produto->where('produto_id', $produto_id)->first();
+        } else {
+            $produto->produto_id    = "";
+            $produto->categoria_id  = "";
+            $produto->produto       = "";
+            $produto->valor_produto = "";
+            $produto->descricao     = "";
+        }
 
-        dd($query);
+        $categoria = new Categoria();
 
-        return view('produto.adicionar-produto', ['categoria' => $categoria->get()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('produto.addedit', [
+            'categoria'     => $categoria->get(),
+            'produto'       => $produto
+        ]);
     }
 
     /**
@@ -46,7 +40,32 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'categoria'         => 'required',
+            'produto'           => 'required',
+            'valor'             => 'required',
+            'descricao_produto' => 'required'
+        ]);
+
+        $model  = new Produto();
+
+        if (!$request->input('produto_id')) {
+
+            $model->categoria_id           = $request->input('categoria');
+            $model->produto                = $request->input('produto');
+            $model->valor_produto          = $request->input('valor');
+            $model->descricao              = $request->input('descricao_produto');
+
+            $model->save();
+        } else {
+            $model->where('produto_id', $request->input('produto_id'))
+                ->update([
+                    'categoria_id'  => $request->input('categoria'),
+                    'produto'       => $request->input('produto'),
+                    'valor_produto' => $request->input('valor'),
+                    'descricao'     => $request->input('descricao_produto'),
+                ]);
+        }
     }
 
     /**
@@ -55,32 +74,14 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id = null)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $produto = DB::table('produto')
+            ->leftJoin('categoria', 'produto.categoria_id', '=', 'categoria.categoria_id')
+            ->orderBy('produto_id', 'DESC')
+            ->paginate(5);
+        // dd($produto);
+        return view('produto.produto', ['produtos' => $produto]);
     }
 
     /**
@@ -91,6 +92,12 @@ class ProdutoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            DB::table('produto')->where('produto_id', $id)->delete();
+
+            return response()->json(['erro' => 0]);
+        } catch (\Throwable $th) {
+            return response()->json(['erro' => 1]);
+        }
     }
 }

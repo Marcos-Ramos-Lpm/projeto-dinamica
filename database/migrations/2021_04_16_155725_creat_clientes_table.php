@@ -13,11 +13,11 @@ class CreatClientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('clientes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('cliente', function (Blueprint $table) {
+            $table->id('cliente_id');
             $table->string('nome');
             $table->date('data_nascimento');
+            $table->timestamps();
         });
     }
 

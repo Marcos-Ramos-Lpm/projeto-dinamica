@@ -16,32 +16,27 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <form method="POST" action="">
+                                <form id="addedit-formulario" method="POST">
                                     @csrf
+                                    <input type="hidden" name="cliente_id" value="{{ $cliente->cliente_id }}" />
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="form-group">
                                                 <label for="nome">Nome Completo</label>
-                                                <input type="text" class="form-control" @error('nome') is-invalid @enderror
-                                                    name="nome" id="nome" placeholder="Nome Completo">
-                                                @error('nome')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <input type="text" class="form-control" name="nome" id="nome"
+                                                    placeholder="Nome Completo" value="{{ $cliente->nome }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="data_nascimento">Data nascimento</label>
-                                                <input type="date" class="form-control" @error('data_nascimento') is-invalid
-                                                    @enderror name="data_nascimento" id="data_nascimento"
-                                                    placeholder="Nome Completo">
-                                                @error('nome')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <input type="date" class="form-control" name="data_nascimento"
+                                                    id="data_nascimento" placeholder="Nome Completo"
+                                                    value="{{ $cliente->data_nascimento }}">
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                    <button type="button" class="btn btn-primary addedit">Enviar</button>
                                 </form>
                             </div>
                         </div>
@@ -50,4 +45,9 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('plugins/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js-pages/cliente/addedit.js') }}"></script>
 @endsection

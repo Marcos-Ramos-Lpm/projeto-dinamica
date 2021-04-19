@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Cliente;
+use App\Produto;
 use Illuminate\Http\Request;
 
 class VendaController extends Controller
@@ -14,10 +16,6 @@ class VendaController extends Controller
     public function index()
     {
         return view('venda.venda');
-    }
-    public function indexNewVenda()
-    {
-        return view('venda.nova_venda');
     }
 
     /**
@@ -38,7 +36,15 @@ class VendaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $cliente = Cliente::all();
+            $produto = Produto::all();
+
+
+            return view('venda.nova_venda', ['cliente' => $cliente, 'produto' => $produto]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**

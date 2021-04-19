@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Produto extends Model
 {
     protected $table = 'produto';
+    protected $fillable = ['descricao', 'valor_produto', 'categoria_id', 'produto_id'];
     protected $primaryKey = 'produto_id';
     public $timestamps = true;
 
@@ -16,4 +17,5 @@ class Produto extends Model
 
         return $result;
     }
+   
 }

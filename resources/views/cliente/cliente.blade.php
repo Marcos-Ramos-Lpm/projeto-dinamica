@@ -9,13 +9,14 @@
                         <h6 class="m-0 font-weight-bold text-primary">Clientes</h6>
                         <div>
                             <a href="" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
-                            <a href="{{ route('novo-cliente') }}" class="btn btn-sm text-primary"><i class="fa fa-plus"
+                            <a href="{{ route('addedit-cliente') }}" class="btn btn-sm text-primary"><i class="fa fa-plus"
                                     title="Adicionar Cliente"></i></a>
                         </div>
 
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
+                        
                         <table class="table">
                             <thead class="thead-light">
                                 <tr>
@@ -27,13 +28,19 @@
                             </thead>
                             <tbody>
                                 @foreach ($dadosClient as $rst)
-                                    <tr>
-                                        <th scope="row">{{ $rst->id }}</th>
+                                    <tr class="linha{{ $rst->cliente_id }}">
+                                        <input type="hidden" name="token" value="">
+                                        <th scope=" row">{{ $rst->cliente_id }}</th>
                                         <td>{{ $rst->nome }}</td>
                                         <td>{{ date('d/m/Y', strtotime($rst->data_nascimento)) }}</td>
-                                        <td><button href="" class="btn btn-xs text-success"><i
-                                                    class="fas fa-pencil-alt"></i></button><button href=""
-                                                class="btn btn-xs text-warning"><i class="fas fa-trash-alt"></i></button>
+                                        <td>
+                                            <a href="{{ asset("cliente/addedit/{$rst->cliente_id}") }}"
+                                                class="btn btn-xs text-success"><i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                            <button class="btn btn-xs text-warning"
+                                                onclick="deletarCliente({{ $rst->cliente_id }})"><i
+                                                    class="fas fa-trash-alt"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -46,3 +53,6 @@
         </div>
     </div>
 @endsection
+
+<script src="{{ asset('plugins/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('js-pages/cliente/cliente.js') }}"></script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -12,7 +13,7 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function show()
     {
         $dadosCliente = Cliente::all();
 
@@ -24,9 +25,21 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index_cadastro()
+    public function addedit($cliente_id = null)
     {
-        return view('cliente.adicionar-cliente');
+        $cliente = new Cliente();
+
+        if ($cliente_id) {
+            $cliente = $cliente->where('cliente_id', $cliente_id)->first();
+        } else {
+            $cliente->cliente_id      = '';
+            $cliente->nome            = '';
+            $cliente->data_nascimento = '';
+        }
+
+        $retorno = view('cliente.addedit', ['cliente' => $cliente]);
+
+        return $retorno;
     }
 
     /**
@@ -35,47 +48,39 @@ class ClienteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo_cliente(Request $request)
+    public function store(Request $request)
     {
-        $request->validate([
-            'nome' => 'required',
-            'data_nascimento' => 'required',
-        ]);
-        $client = Cliente::create($request->all());
+
+        try {
+            $request->validate([
+                'nome'              => 'required',
+                'data_nascimento'   => 'required',
+            ]);
+
+            $cliente = new Cliente();
+
+
+            if (!$request->input('cliente_id')) {
+                $cliente->nome              = $request->input('nome');
+                $cliente->data_nascimento   = $request->input('data_nascimento');
+                $cliente->save();
+
+                return redirect('/addedit')->with('msg', 'Adicionado com sucesso');
+            } else {
+                $cliente->where('cliente_id', $request->input('cliente_id'))
+                    ->update([
+                        'nome'              => $request->input('nome'),
+                        'data_nascimento'   => $request->input('data_nascimento'),
+                    ]);
+                return redirect('/cliente')->with('msg', 'Editado com sucesso');
+            }
+
+            return response()->json(['erro' => 0]);
+        } catch (\Throwable $th) {
+            return response()->json(['erro' => 1]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function listarCliente()
-    {
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -85,6 +90,12 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            DB::table('cliente')->where('cliente_id', $id)->delete();
+
+            return response()->json(['erro' => 0]);
+        } catch (\Throwable $th) {
+            return response()->json(['erro' => 1]);
+        }
     }
 }

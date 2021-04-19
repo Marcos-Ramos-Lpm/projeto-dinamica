@@ -11,7 +11,8 @@
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-area">
-                            <h1>Seja bem vindo,<h1> <h2>Marcos ramos de almeida.</h2>
+                            <h1>Seja bem vindo,<h1>
+                                    <h2>{{ Auth::user()->name }}</h2>
                         </div>
                     </div>
                 </div>
