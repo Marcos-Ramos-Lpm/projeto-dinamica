@@ -1,5 +1,6 @@
 <?php
 
+use App\Categoria;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -12,9 +13,15 @@ class CategoriaSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('categoria')->insert([
-            'categoria' => 'Ferramentas',
-            'created_at' => date('Y-m-d H:i:s'),
-        ]);
+        $categorias = [
+            ['categoria' => 'Ferramentas'],
+            ['categoria' => 'Hidráulica'],
+            ['categoria' => 'Iluminação'],
+            ['categoria' => 'Piso e Porcelanato']
+        ];
+        
+        foreach ($categorias as $key => $categoria) {
+            Categoria::create($categoria);
+        }
     }
 }

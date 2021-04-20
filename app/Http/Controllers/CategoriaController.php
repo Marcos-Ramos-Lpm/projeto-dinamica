@@ -48,6 +48,7 @@ class CategoriaController extends Controller
                     'categoria'              => $request->input('categoria'),
                 ]);
         }
+        return redirect('/categoria');
     }
 
     /**
@@ -58,32 +59,11 @@ class CategoriaController extends Controller
      */
     public function show()
     {
-        $categoria = Categoria::all();
+        $categoria = DB::table('categoria')
+            ->orderBy('categoria_id', 'DESC')
+            ->paginate(5);
 
         return view('categoria.categoria', ['categoria' => $categoria]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**

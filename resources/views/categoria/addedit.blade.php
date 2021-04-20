@@ -8,7 +8,7 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Nova categoria de produto</h6>
                         <div>
-                            <a href="" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
+                            <a href="{{ route('home') }}" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
                         </div>
 
                     </div>
@@ -38,4 +38,8 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('plugins/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('js-pages/categoria/addedit.js') }}"></script>
 @endsection

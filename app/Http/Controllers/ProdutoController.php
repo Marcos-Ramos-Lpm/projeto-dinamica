@@ -12,24 +12,28 @@ class ProdutoController extends Controller
 
     public function addedit($produto_id = null)
     {
-        $produto = new Produto();
+        try {
+            $produto = new Produto();
 
-        if ($produto_id) {
-            $produto = $produto->where('produto_id', $produto_id)->first();
-        } else {
-            $produto->produto_id    = "";
-            $produto->categoria_id  = "";
-            $produto->produto       = "";
-            $produto->valor_produto = "";
-            $produto->descricao     = "";
+            if ($produto_id) {
+                $produto = $produto->where('produto_id', $produto_id)->first();
+            } else {
+                $produto->produto_id    = "";
+                $produto->categoria_id  = "";
+                $produto->produto       = "";
+                $produto->valor_produto = "";
+                $produto->descricao     = "";
+            }
+
+            $categoria = new Categoria();
+
+            return view('produto.addedit', [
+                'categoria'     => $categoria->get(),
+                'produto'       => $produto
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        $categoria = new Categoria();
-
-        return view('produto.addedit', [
-            'categoria'     => $categoria->get(),
-            'produto'       => $produto
-        ]);
     }
 
     /**
@@ -40,31 +44,36 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'categoria'         => 'required',
-            'produto'           => 'required',
-            'valor'             => 'required',
-            'descricao_produto' => 'required'
-        ]);
+        try {
+            $request->validate([
+                'categoria'         => 'required',
+                'produto'           => 'required',
+                'valor'             => 'required',
+                'descricao_produto' => 'required'
+            ]);
 
-        $model  = new Produto();
+            $model  = new Produto();
 
-        if (!$request->input('produto_id')) {
+            if (!$request->input('produto_id')) {
 
-            $model->categoria_id           = $request->input('categoria');
-            $model->produto                = $request->input('produto');
-            $model->valor_produto          = $request->input('valor');
-            $model->descricao              = $request->input('descricao_produto');
+                $model->categoria_id           = $request->input('categoria');
+                $model->produto                = $request->input('produto');
+                $model->valor_produto          = $request->input('valor');
+                $model->descricao              = $request->input('descricao_produto');
 
-            $model->save();
-        } else {
-            $model->where('produto_id', $request->input('produto_id'))
-                ->update([
-                    'categoria_id'  => $request->input('categoria'),
-                    'produto'       => $request->input('produto'),
-                    'valor_produto' => $request->input('valor'),
-                    'descricao'     => $request->input('descricao_produto'),
-                ]);
+                $model->save();
+            } else {
+                $model->where('produto_id', $request->input('produto_id'))
+                    ->update([
+                        'categoria_id'  => $request->input('categoria'),
+                        'produto'       => $request->input('produto'),
+                        'valor_produto' => $request->input('valor'),
+                        'descricao'     => $request->input('descricao_produto'),
+                    ]);
+            }
+            return redirect('/produto');
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 
@@ -76,12 +85,15 @@ class ProdutoController extends Controller
      */
     public function show($id = null)
     {
-        $produto = DB::table('produto')
-            ->leftJoin('categoria', 'produto.categoria_id', '=', 'categoria.categoria_id')
-            ->orderBy('produto_id', 'DESC')
-            ->paginate(5);
-        // dd($produto);
-        return view('produto.produto', ['produtos' => $produto]);
+        try {
+            $produto = DB::table('produto')
+                ->leftJoin('categoria', 'produto.categoria_id', '=', 'categoria.categoria_id')
+                ->orderBy('produto_id', 'DESC')
+                ->paginate(5);
+            // dd($produto);
+            return view('produto.produto', ['produtos' => $produto]);
+        } catch (\Throwable $th) {
+        }
     }
 
     /**

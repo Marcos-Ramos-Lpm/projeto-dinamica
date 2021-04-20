@@ -8,7 +8,7 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Nova venda</h6>
                         <div>
-                            <a href="" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
+                            <a href="{{ route('home') }}" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
                         </div>
 
                     </div>
@@ -70,6 +70,18 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="lista"></tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th scope="col"><label for="valortotal">Valor total</label><input
+                                                                type="text" readonly class="form-control" name="valortotal"
+                                                                id="valortotal">
+                                                        </th>
+                                                        <th scope="col"><label for="valor-pagar">Valor a pagar</label>
+                                                            <input class="form-control" readonly name="valor-pagar"
+                                                                id="valor-pagar">
+                                                        </th>
+                                                    </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>

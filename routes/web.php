@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,5 +48,8 @@ Route::group(['prefix' => 'produto'], function () {
 });
 
 //vendas
-Route::get('/vendas', 'VendaController@index')->middleware('auth')->name('vendas');
-Route::get('/venda', 'VendaController@store')->middleware('auth')->name('nova-venda');
+Route::group(['prefix' => 'venda'], function () {
+    Route::get('/', 'VendaController@index')->middleware('auth')->name('vendas');
+    Route::get('/venda', 'VendaController@store')->middleware('auth')->name('nova-venda');
+    Route::post('/venda', 'VendaController@get')->middleware('auth')->name('carrega-produto');
+});

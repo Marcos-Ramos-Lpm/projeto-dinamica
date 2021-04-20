@@ -8,7 +8,7 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Novo cliente</h6>
                         <div>
-                            <a href="" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
+                            <a href="{{ route('home') }}" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
                         </div>
 
                     </div>
@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <form id="addedit-formulario" method="POST">
+                                <form id="addedit-formulario" method="POST" action="{{ route('create-update') }}">
                                     @csrf
                                     <input type="hidden" name="cliente_id" value="{{ $cliente->cliente_id }}" />
                                     <div class="row">
@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary addedit">Enviar</button>
+                                    <button type="submit" class="btn btn-primary addedit">Enviar</button>
                                 </form>
                             </div>
                         </div>
@@ -45,9 +45,4 @@
             </div>
         </div>
     </div>
-@endsection
-@section('scripts')
-    <script src="{{ asset('plugins/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
-    <script src="{{ asset('js-pages/cliente/addedit.js') }}"></script>
 @endsection

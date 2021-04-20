@@ -4,26 +4,35 @@ $(document).ready(function() {
 
 var Venda = function() {
     return {
+
         btnAdicionar: function() {
             $('#adiciona-itens-ao-carrinho').on('click', function() {
-                Venda.adicionarItemVenda();
+                $produto = $('select[name="produto"]').val();
+                if ($produto) {
+                    Venda.adicionarItemVenda();
+                } else {
+                    Main.alert({
+                        container: '#adicionar-venda',
+                        type: 'warning',
+                        icon: 'fa fa-times',
+                        message: 'Atenção, informe um produto para adicionar',
+                        closeInSeconds: 3
+                    });
+                }
+
             });
+
+
         },
         adicionarItemVenda: function() {
             var tr = $('#lista tr:last').data('item') ? $('#lista tr:last').data('item') : 0;
             var cont = tr + 1;
-            var html = '';
 
-            html += `<tr data-item=\"${cont}\">`;
-            html += `<td>${cont}</td>`;
-            html += `<td>Martelo</td>`;
-            html += `<td><input type="number" name="qtdProduto[]" min="1" value="1"/></td>`;
-            html += `<td>R$:12,99</td>`;
-            html += `<td>R$:24,98</td>`;
-            html += `<td>${this.btnRemover(cont)}</td>`;
-            html += `</tr>`;
 
-            $('#lista').append(html);
+            var produto = $('#produto :selected').text();
+            var produto = $('#produto').val();
+
+            Venda.getProduto(produto, cont);
         },
         removerItemVenda: function(tr) {
             $("#lista tr[data-item=" + tr + "]").remove();
@@ -38,5 +47,46 @@ var Venda = function() {
             let btn = `<button type=\"button\" data-tr="${item}" onclick=\"Venda.removerItemVenda(${item})\" class=\"btn btn-xs btn-warning\"><i class=\"fas fa-trash-alt\"></i></button>`;
             return btn;
         },
+        getProduto: function(codigo, cont) {
+            $.ajax({
+                dataType: 'json',
+                url: 'venda',
+                data: { codigo: codigo },
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if (data) {
+                        var html = '';
+                        for (let i = 0; i < data.length; i++) {
+                            html += '<tr data-item=' + cont + '>';
+                            html += '<td>' + cont + '</td>';
+                            html += '<td>' + data[i].produto + '</td>';
+                            html += '<td><input type="number" name="qtdProduto" min="1" value="1" onchange="Venda.calcularValor(' + cont + ',' + data[i].valor_produto + ')"/></td>';
+                            html += '<td>' + data[i].valor_produto + '</td>';
+                            html += '<td><label id="valor">R$:' + data[i].valor_produto + '</label></td>';
+                            html += '<td></td>';
+                            html += '</tr>';
+
+                            $('#lista').append(html);
+
+                        }
+                    }
+                },
+            });
+        },
+        calcularValor: function(cont, valor) {
+            var qtd = $('input[name="qtdProduto"]').val();
+
+            var valor = parseFloat(valor) * qtd;
+            alert(cont);
+
+
+            $('input[name="valortotal"]').val(valor);
+            $('input[name="valor-pagar"]').val(valor);
+
+        },
+
     }
 }();

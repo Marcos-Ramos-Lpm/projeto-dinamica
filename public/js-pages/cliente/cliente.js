@@ -21,6 +21,9 @@ function deletarCliente(codigo) {
                     url: 'cliente/delete/' + codigo,
                     data: { codigo: codigo, _token: token },
                     type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     beforeSend: function() {
 
                     },

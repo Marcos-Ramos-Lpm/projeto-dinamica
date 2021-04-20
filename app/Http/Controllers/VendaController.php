@@ -91,4 +91,16 @@ class VendaController extends Controller
     {
         //
     }
+
+    public function get(Request $request)
+    {
+        try {
+
+            $produto = Produto::find($request);
+
+            return json_encode($produto);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
 }

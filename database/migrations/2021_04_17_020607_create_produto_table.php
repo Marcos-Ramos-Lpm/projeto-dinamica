@@ -16,7 +16,9 @@ class CreateProdutoTable extends Migration
         Schema::create('produto', function (Blueprint $table) {
             $table->bigIncrements('produto_id');
             $table->unsignedBigInteger('categoria_id');
-            $table->foreign('categoria_id')->references('categoria_id')->on('categoria');
+            $table->foreign('categoria_id')->references('categoria_id')->on('categoria')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
             $table->string('produto');
             $table->decimal('valor_produto');
             $table->longText('descricao');

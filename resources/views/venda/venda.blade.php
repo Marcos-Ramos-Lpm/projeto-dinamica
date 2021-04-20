@@ -8,7 +8,7 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Vendas</h6>
                         <div>
-                            <a href="" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
+                            <a href="{{ route('home') }}" class="btn btn-sm text-primary"><i class="fa fa-home" title="Home"></i></a>
                             <a href="{{ route('nova-venda') }}" class="btn btn-sm text-primary"><i class="fa fa-plus"
                                     title="Nova Venda"></i></a>
                         </div>

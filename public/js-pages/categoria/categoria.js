@@ -13,6 +13,7 @@ function deletarCategoria(codigo) {
             }
         },
         message: 'Excluir o cadastro dessa categoria?',
+        centerVertical: true,
         callback: function(result) {
             if (result) {
                 $.ajax({
@@ -20,6 +21,9 @@ function deletarCategoria(codigo) {
                     url: 'categoria/delete/' + codigo,
                     data: { codigo: codigo, _token: token },
                     type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     beforeSend: function() {
 
                     },
